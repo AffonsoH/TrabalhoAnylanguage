@@ -1,6 +1,9 @@
 import pygame
-import pymunk
+import sys
+
 pygame.init()
+
+pygame.display.flip()
 
 cores = {
     "vermelho": (255, 0, 0),
@@ -9,6 +12,15 @@ cores = {
 }
 
 
-tamanho_tela = (800, 800)
+tamanho_tela = (500, 500)
 tela = pygame.display.set_mode(tamanho_tela)
 pygame.display.set_caption("SDSA")
+
+rodando = True
+while rodando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+            
+pygame.quit()
+sys.exit()
