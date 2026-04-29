@@ -36,7 +36,7 @@ stun_player1 = 0
 direcao1 = [0, 1]
 direcao2 = [0, -1]
 
-socos =[]
+socos = []
 velocidade_socos = 30
 
 player1 = pygame.Rect(x, y, 50, 50)
@@ -50,6 +50,12 @@ tela = pygame.display.set_mode(tamanho_tela)
 pygame.display.set_caption("SDSA")
 
 pygame.draw.rect(tela, cores["vermelho"], retangulo)
+
+img_p1 = pygame.image.load(r'C:\Users\aluno\Downloads\player1.jpg')
+img_p2 = pygame.image.load(r'C:\Users\aluno\Downloads\player2.jpg')
+
+img_p1 = pygame.transform.scale(img_p1, (50, 50))
+img_p2 = pygame.transform.scale(img_p2, (50, 50))
 
 img_gameover = pygame.image.load(r'C:\Users\aluno\Downloads\gameover2.jpg')
 img_gameover = pygame.transform.scale(img_gameover, tamanho_tela)
@@ -90,13 +96,22 @@ while rodando:
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_e:
                 nova_bala2 = pygame.Rect(player2.centerx - 5, player2.top, 10, 20)
-                balas2.append(nova_bala2)
+                balas2.append({
+    "rect": nova_bala2, 
+    "tempo": tempo_atual, 
+    "vel_x": direcao2[0] * velocidade_bala, 
+    "vel_y": direcao2[1] * velocidade_bala
+})
                 
         if evento.type == pygame.KEYDOWN:
-            if evento.key == pygame.K_KP_1:
+            if evento.key == pygame.K_RSHIFT:
                 novo_soco = pygame.Rect(player1.centerx - 5, player1.top, 10, 20)
-                socos.append({"rect": novo_soco, "tempo": tempo_atual})
-                    
+                socos.append({
+                    "rect": novo_soco, 
+                    "tempo": tempo_atual, 
+                    "vel_x": direcao1[0] * velocidade_socos, 
+                    "vel_y": direcao1[1] * velocidade_socos
+})                  
             
     pos_antiga1 = player1.topleft
     pos_antiga2 = player2.topleft
@@ -113,10 +128,10 @@ while rodando:
             direcao1 = [1, 0]
        if teclas[pygame.K_UP]:    
             y -= velocidade
-            direcao1 = [0, 1]
+            direcao1 = [0, -1]
        if teclas[pygame.K_DOWN]:  
             y += velocidade
-            direcao1 = [0, -1]
+            direcao1 = [0, 1]
     
     if teclas[pygame.K_a]: 
         x2 -= velocidade
@@ -126,7 +141,7 @@ while rodando:
         direcao2 = [1, 0]
     if teclas[pygame.K_w]: 
         y2 -= velocidade
-        direcao2 = [0, 1]
+        direcao2 = [0, -1]
     if teclas[pygame.K_s]: 
         y2 += velocidade
         direcao2 = [0, 1]
@@ -149,17 +164,19 @@ while rodando:
             balas.remove(bala)
             
     for bala2 in balas2[:]:
-        bala2.y -= velocidade_bala
+        bala2["rect"].x += bala2["vel_x"]
+        bala2["rect"].y +=bala2["vel_y"]
         
-        if bala2.colliderect(player1):
+        if bala2["rect"].colliderect(player1):
             balas2.remove(bala2)
             hpPlayer1 -= 7
             
-        elif bala2.y < 0:
+        elif bala2["rect"].y < 0:
             balas2.remove(bala2)
     
     for soco in socos[:]:
-        soco["rect"].y += velocidade_socos
+        soco["rect"].x += soco["vel_x"]
+        soco["rect"].y += soco["vel_y"]
         if tempo_atual - soco["tempo"] > 50:
             socos.remove(soco)
         elif soco["rect"].colliderect(player2):
@@ -167,8 +184,8 @@ while rodando:
             hpPlayer2 -= 14
     
     tela.fill(cores["preto"])
-    pygame.draw.rect(tela, cores["azul"], (x2, y2, 50, 50))
-    pygame.draw.rect(tela, cores["vermelho"], pygame.Rect(x, y, 50, 50))
+    tela.blit(img_p1, player1)
+    tela.blit(img_p2, player2)
     
     texto_hp1 = fonte.render(f"HP P1: {hpPlayer1}", True, (255, 255, 255))
     texto_hp2 = fonte.render(f"HP P2: {hpPlayer2}", True, (255, 255, 255))
@@ -180,7 +197,7 @@ while rodando:
         pygame.draw.rect(tela, cores["amarelo"], bala)
         
     for bala2 in balas2:
-        pygame.draw.rect(tela, cores["cinza"], bala2)
+        pygame.draw.rect(tela, cores["cinza"], bala2["rect"])
         
     for soco in socos:
         pygame.draw.rect(tela, cores["vermelho"], soco["rect"])
