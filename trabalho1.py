@@ -26,6 +26,7 @@ y2 = 750
 velocidade2 = 5
 
 cooldown_turbo = 6000
+ultimo_turbo_p1 = 0
 
 hpPlayer1 = 100
 hpPlayer2 = 100
@@ -99,10 +100,10 @@ while rodando:
             if evento.key == pygame.K_e:
                 nova_bala2 = pygame.Rect(player2.centerx - 5, player2.top, 10, 20)
                 balas2.append({
-    "rect": nova_bala2, 
-    "tempo": tempo_atual, 
-    "vel_x": direcao2[0] * velocidade_bala, 
-    "vel_y": direcao2[1] * velocidade_bala
+                    "rect": nova_bala2, 
+                    "tempo": tempo_atual, 
+                    "vel_x": direcao2[0] * velocidade_bala, 
+                    "vel_y": direcao2[1] * velocidade_bala
 })
                 
         if evento.type == pygame.KEYDOWN:
@@ -113,11 +114,12 @@ while rodando:
                     "tempo": tempo_atual, 
                     "vel_x": direcao1[0] * velocidade_socos, 
                     "vel_y": direcao1[1] * velocidade_socos
-})                  
-        if evento.key == pygame.K_KP1:
-            if tempo_atual - ultimo_turbo_p1 > cooldown_turbo:
-                fim_turbo_p1 = tempo_atual + 3000
-                ultimo_turbo_p1 = tempo_atual
+                })   
+                               
+            if evento.key == pygame.K_KP1:
+                if tempo_atual - ultimo_turbo_p1 > cooldown_turbo:
+                    fim_turbo_p1 = tempo_atual + 3000
+                    ultimo_turbo_p1 = tempo_atual
             
     pos_antiga1 = player1.topleft
     pos_antiga2 = player2.topleft
