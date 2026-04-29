@@ -25,6 +25,8 @@ x2 = 400
 y2 = 750
 velocidade2 = 5
 
+cooldown_turbo = 6000
+
 hpPlayer1 = 100
 hpPlayer2 = 100
 
@@ -112,6 +114,10 @@ while rodando:
                     "vel_x": direcao1[0] * velocidade_socos, 
                     "vel_y": direcao1[1] * velocidade_socos
 })                  
+        if evento.key == pygame.K_KP1:
+            if tempo_atual - ultimo_turbo_p1 > cooldown_turbo:
+                fim_turbo_p1 = tempo_atual + 3000
+                ultimo_turbo_p1 = tempo_atual
             
     pos_antiga1 = player1.topleft
     pos_antiga2 = player2.topleft
