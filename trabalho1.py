@@ -27,6 +27,7 @@ velocidade2 = 5
 
 cooldown_turbo = 6000
 ultimo_turbo_p1 = 0
+fim_turbo_p1 = 0
 
 hpPlayer1 = 100
 hpPlayer2 = 100
@@ -120,7 +121,10 @@ while rodando:
                 if tempo_atual - ultimo_turbo_p1 > cooldown_turbo:
                     fim_turbo_p1 = tempo_atual + 3000
                     ultimo_turbo_p1 = tempo_atual
-            
+                    velocidade = 30
+        if tempo_atual > fim_turbo_p1:
+            velocidade = 5
+                                
     pos_antiga1 = player1.topleft
     pos_antiga2 = player2.topleft
     
@@ -213,7 +217,5 @@ while rodando:
     pygame.display.flip()
     relogio.tick(60)
 
-
-            
 pygame.quit()
 sys.exit()
